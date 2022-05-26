@@ -8,7 +8,7 @@ from rdkit.Chem import Draw
 mol = Chem.MolFromSmiles("C1CC2=C3C(=CC=C2)C(=CN3C1)[C@H]4[C@@H](C(=O)NC4=O)C5=CNC6=CC=CC=C65")
 
 logp = Descriptors.MolLogP(mol, includeHs=True)
-print(logp) comment check MM commit / branch test
+print(logp) comment check MM commit / branch test 2
 
 response = requests.get('https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/vioxx/property/InChI/TXT')
 inchi_input = response.text.strip('\n')
