@@ -21,3 +21,10 @@ mol_list.append(inchi_mol)
 Draw.MolsToGridImage(mol_list)
 img = Draw.MolsToGridImage(mol_list)
 img.save('output.png')
+
+# next steps
+# use f string to try a new drug
+drug_name = try_something
+response = requests.get(f'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/{drug_name}/property/InChI/TXT')
+inchi_input = response.text.strip('\n')
+inchi_mol = Chem.MolFromInchi(inchi_input)#, sanitize=False, removeHs=False)
