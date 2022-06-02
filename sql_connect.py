@@ -2,13 +2,17 @@ import mysql.connector
 import os
 from dotenv import load_dotenv
 
-host_IP = os.getenv('host_IR')
-user = os.getenv('host_IR')
-pw = os.getenv('host_IR')
+load_dotenv()
+host_IP = os.getenv('host_IP')
+db_user = os.getenv('db_user')
+db_pw = os.getenv('db_pw')
+
+print(host_IP)
+print(db_user)
 pharmacogenomics_db = mysql.connector.connect(
-    host=host_IP,
-    user=user,
-    password=pw
+    host=f'{host_IP}',
+    user=f'{db_user}',
+    password=f'{db_pw}'
 )
 print("Connection ID:", pharmacogenomics_db.connection_id)
 
@@ -16,11 +20,11 @@ sql_sel_database = "USE pharmacogenomics_dev"
 cursor = pharmacogenomics_db.cursor()
 cursor.execute(sql_sel_database)
 
-unmapped_precursor_InChiKeys = []
+total_InChiKeys = []
 sql = f"""
    SELECT count(*) FROM pharmacogenomics_dev.precursors;"""
 cursor = pharmacogenomics_db.cursor(buffered=True)
 cursor.execute(sql)
 pharmacogenomics_db.commit()
-unmapped_precursor_InChiKeys = cursor.fetchall()
-print((unmapped_precursor_InChiKeys))
+total_InChiKeys = cursor.fetchall()
+print((total_InChiKeys))
