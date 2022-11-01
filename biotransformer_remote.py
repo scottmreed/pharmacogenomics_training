@@ -2,15 +2,14 @@ import paramiko
 import os
 import logging
 import mysql.connector
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
 
 biotransformer_folder = os.path.join('/', 'home', 'boss', 'biotransformerjar3','biotransformer3.0jar')
 
 error_logger = logging.getLogger('bt.error')
 info_logger = logging.getLogger('bt.info')
-
-load_dotenv()
 
 mysql_host = os.getenv('mysql_host')
 mysql_user = os.getenv('mysql_user')
@@ -21,9 +20,11 @@ pharmacogenomics_db = mysql.connector.connect(
     host=mysql_host,
     user=mysql_user,
     password=mysql_pw,
-    db="pharmacogenomics")
+    db="pharmacogenomics_dev")
 
-cursor = pharmacogenomics_db.cursor(buffered=True, dictionary=True)
+print("Connection ID:", pharmacogenomics_db.connection_id)
+
+cursor = pharmacogenomics_db.cursor(buffered=False, dictionary=True)
 
 sql = f"""
 SELECT distinct drugID, SmileCode
@@ -73,7 +74,7 @@ for line in drugs_short:
     drug = str(cid)
     Smile_to_biotransform = line['SmileCode']
     smile_string = str(Smile_to_biotransform)
-    batch_file = f'cd {biotransformer_folder} && java -jar BioTransformer3.0_20220615.jar -k pred -b allHuman -ismi \"{smile_string}\" -ocsv temp_bt -s 2'
+    batch_file = f'cd {biotransformer_folder} && java -jar BioTransformer3.0_20220615.jar -k pred -b allHuman -ismi \"{smile_string}\" -ocsv {temp_bt} -s 2'
 
     send_batch('paramiko_batch.sh', batch_file, sftp)
 

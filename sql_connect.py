@@ -3,9 +3,9 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-host_IP = os.getenv('host_IP')
-db_user = os.getenv('db_user')
-db_pw = os.getenv('db_pw')
+host_IP = os.getenv('mysql_host')
+db_user = os.getenv('mysql_user')
+db_pw = os.getenv('mysql_pw')
 
 print(host_IP)
 print(db_user)

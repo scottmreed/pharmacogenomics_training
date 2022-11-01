@@ -1,3 +1,6 @@
+Explore notebooks 1 through 4 (modified from OLCC Cheminformatics course) at your own pace. 
+Once comfortable with these, try playing with main.py
+
 From this starting point, try downloading the structure of a 
 few drug molecules and calculating their logp and saving a figure.
 
@@ -13,6 +16,10 @@ $ conda activate my-rdkit-env
 If for some reason this does not work, try:
 $ cd [anaconda folder]/bin
 $ source activate my-rdkit-env
+
+Easier option:
+pip install rdkit-pypi
+
 Windows users will use a slightly different command:
 C:\> activate my-rdkit-env
 
@@ -22,3 +29,8 @@ add select add from the gear box then connect to the
 
 After that, select edit configuration (under Run, e.g.)
 Then add that conda env to your configuration for main.py
+
+Then use Sql_connect to query the development mysql server
+
+Finally, try running fpocket or equibind remotely after adding your log in credentials to a .env file
+
