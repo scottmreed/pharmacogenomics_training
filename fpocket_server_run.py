@@ -20,8 +20,22 @@ if __name__ == '__main__':
     protein_folders, success = fpocket_server.run_command(f'ls {alpha_folder}')
     protein_list = protein_folders.split("\n")
     for protein in protein_list:
-        fpocket_command = f'{fpocket_dir}/fpocket -f {alpha_folder}/{protein}'
+        fpocket_command = f'{fpocket_dir}/fpocket -f {alpha_folder}/{protein}/{protein}.pdb'
+        fpocket_output, success = fpocket_server.run_command(fpocket_command)
+        fpocket_readout = f'cat {alpha_folder}/{protein}/{protein}_out/pockets/pocket1_atm.pdb'
+        fpocket_pocket, success = fpocket_server.run_command(fpocket_readout)
+        print(fpocket_pocket)
+        # clean_command = f'rm {alpha_folder}/{protein}/{protein}_out/{protein}_out.pdb'
+        # _, _ = fpocket_server.run_command(clean_command)
+        # clean_command = f'rm {alpha_folder}/{protein}/{protein}_out/{protein}.pml'
+        # _, _ = fpocket_server.run_command(clean_command)
+        # clean_command = f'rm {alpha_folder}/{protein}/{protein}_out/{protein}_pockets.pqr'
+        # _, _ = fpocket_server.run_command(clean_command)
+        # clean_command = f'rm {alpha_folder}/{protein}/{protein}_out/{protein}_PYMOL.sh'
+        # _, _ = fpocket_server.run_command(clean_command)
+        # clean_command = f'rm {alpha_folder}/{protein}/{protein}_out/{protein}.tcl'
+        # _, _ = fpocket_server.run_command(clean_command)
+        # clean_command = f'rm {alpha_folder}/{protein}/{protein}_out/{protein}_VMD.sh'
+        # _, _ = fpocket_server.run_command(clean_command)
 
-        # fpocket_output, success = fpocket_server.run_command(fpocket_command)
-        print(fpocket_output)
 
