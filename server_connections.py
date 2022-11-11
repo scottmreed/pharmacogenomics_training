@@ -36,3 +36,7 @@ class Serverconnection:
 
     def send_chmod(self, path):
         self.sftp.chmod(path, 0o775)
+
+    def retreive_results(folder, sftp):
+        f = sftp.get(f'{folder}/temp_bt', 'output')
+        print(f)

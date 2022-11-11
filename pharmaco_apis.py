@@ -30,6 +30,14 @@ my_data = ({
 res = requests.post(url, json=my_data)
 print(res.content)
 
+
+url = "https://pharmacogenomics.clas.ucdenver.edu/api/metab-prep"
+my_data = ({
+    "smiles": "CCC"
+})
+res = requests.post(url, json=my_data)
+print(res.content)
+
 # url = "https://pharmacogenomics.clas.ucdenver.edu/api/faspr-run"
 # res = requests.post(url)
 # print(res.content)
