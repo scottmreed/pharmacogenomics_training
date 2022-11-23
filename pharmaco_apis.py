@@ -1,3 +1,4 @@
+#please don't tie up the production server with large requests. I'm working on adding a token system.
 import requests
 
 url = 'https://pharmacogenomics.clas.ucdenver.edu/api/plddt-score'

@@ -5,6 +5,11 @@ host = os.getenv('ALDERAAN_IP')
 username = os.getenv('ALDERAAN_USER')
 password = os.getenv('ALDERAAN_PASSWORD')
 
+my_ip = os.popen('curl ipinfo.io/ip').read()
+
+if my_ip.startswith('97.118.'):
+    host = '192.168.0.20'
+
 class Alderaan(Serverconnection):
     def __init__(self, host, username, password):
         super().__init__(host, username, password)

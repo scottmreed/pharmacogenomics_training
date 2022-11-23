@@ -11,7 +11,16 @@ biotransformer_folder = os.path.join('/', 'home', 'boss', 'biotransformerjar3','
 error_logger = logging.getLogger('bt.error')
 info_logger = logging.getLogger('bt.info')
 
-mysql_host = os.getenv('mysql_host')
+my_ip = os.popen('curl ipinfo.io/ip').read()
+
+if my_ip.startswith('97.118.'):
+    mysql_host = '192.168.0.20'
+    host = '192.168.0.20'
+
+if my_ip.startswith('132.194'):
+    mysql_host = 'pharmacogenomics.ddnsfree.com'
+    host = 'pharmacogenomics.ddnsfree.com'
+# mysql_host = os.getenv('mysql_host')
 mysql_user = os.getenv('mysql_user')
 mysql_pw = os.getenv('mysql_pw')
 
@@ -37,7 +46,7 @@ print('drugs length is:', len(drugs))
 drugs_short = drugs[0:1]
 print(len(drugs_short))
 
-host = os.getenv('pharmaco_server_IP')
+# host = os.getenv('pharmaco_server_IP')
 username = os.getenv('pharmaco_server_USER')
 password = os.getenv('pharmaco_server_PASSWORD')
 
