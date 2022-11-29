@@ -1,6 +1,8 @@
 Explore notebooks 1 through 4 (modified from OLCC Cheminformatics course) at your own pace. 
 Once comfortable with these, try playing with main.py
 
+1_JupyterNotebookIntro is a Jupyter notebook that shows how the sequence of running blocks of code changes the outcome.
+
 Most everything after main.py requires a server account.
 
 From this starting point, try downloading the structure of a 
