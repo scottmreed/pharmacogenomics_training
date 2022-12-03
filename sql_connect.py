@@ -22,7 +22,7 @@ cursor.execute(sql_sel_database)
 
 total_InChiKeys = []
 sql = f"""
-   SELECT * FROM pharmacogenomics_dev.pharmacogenomics_sideeffect;"""
+   SELECT count(*) FROM pharmacogenomics_dev.precursors;"""
 cursor = pharmacogenomics_db.cursor(buffered=True)
 cursor.execute(sql)
 pharmacogenomics_db.commit()

@@ -9,13 +9,21 @@ username = os.getenv('pharmaco_server_USER')
 password = os.getenv('pharmaco_server_PASSWORD')
 
 class Pharmacogenomics(Serverconnection):
+    """This is a subclass of Serverconnection
+    which must be imported from server_connections
+    Multiple subclassses can be prepared for different connections
+    Each inherits the class functions like run_command
+    but allow for a unique set of credentials to be passed.
+    After this subclassing it will need to be instantiated below."""
     def __init__(self, host, username, password):
         super().__init__(host, username, password)
 
 
 if __name__ == '__main__':
+    # These are directories on the remote server
     fpocket_dir = os.path.join('/', 'home', 'boss', 'Fpocket', 'fpocket', 'bin')
     alpha_folder = os.path.join('/', 'home', 'boss', 'website_activity', 'tmp')
+    # Instantiating the server
     fpocket_server = Pharmacogenomics(host=host, username=username, password=password)
     protein_folders, success = fpocket_server.run_command(f'ls {alpha_folder}')
     protein_list = protein_folders.split("\n")

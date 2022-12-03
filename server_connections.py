@@ -8,7 +8,9 @@ info_logger = logging.getLogger('test.info')
 
 
 class Serverconnection:
-
+    """
+    Class to manage multiple different server connections
+    """
     def __init__(self, host, username, password):
 
         self.client = paramiko.client.SSHClient()
