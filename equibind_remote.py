@@ -1,21 +1,16 @@
-from server_connections import Serverconnection
+from server_connections import Pharmacogenomics
+from dotenv import load_dotenv, find_dotenv
 import os
 
-host = os.getenv('ALDERAAN_IP')
-username = os.getenv('ALDERAAN_USER')
-password = os.getenv('ALDERAAN_PASSWORD')
+# Caution: anything sent through run_command will excute on the server you are connected to as written.
+# Look closely at these commands before executing them remotely.
 
-my_ip = os.popen('curl ipinfo.io/ip').read()
+load_dotenv(find_dotenv())
 
-if my_ip.startswith('97.118.'):
-    host = '192.168.0.20'
+username = os.getenv('pharmaco_server_USER')
+password = os.getenv('pharmaco_server_PASSWORD')
 
-class Alderaan(Serverconnection):
-    def __init__(self, host, username, password):
-        super().__init__(host, username, password)
-
-
-equibind_server = Alderaan(host=host, username=username, password=password)
+equibind_server = Pharmacogenomics(username=username, password=password)
 alderaan_pharmaco_folder = os.path.join('/', 'home', 'reedsc', 'temp_file')
 equibind_folder = os.path.join('/', 'home', 'reedsc', 'Equibind', 'EquiBind')
 
@@ -32,7 +27,6 @@ def run_equibind():
     success = True
     try:
         equibind_command = f"sbatch {equibind_folder}/equibind_batch.sh {alderaan_pharmaco_folder}/pdb_temporary.txt"
-        # equibind_command, success = equibind_server.run_command(equibind_command)
         print(success)
 
         # with open('equibind_output.txt', 'w+') as f:

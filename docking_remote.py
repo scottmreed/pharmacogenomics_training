@@ -1,8 +1,11 @@
 import os
 from dotenv import load_dotenv, find_dotenv
-from server_connections import Serverconnection
+from server_connections import Pharmacogenomics
 from biopandas.mol2 import PandasMol2
 from biopandas.pdb import PandasPdb
+
+# Caution: anything sent through run_command will excute on the server you are connected to as written.
+# Look closely at these commands before executing them remotely.
 
 """
 runs qvina expecting the following arrangement in docking_dir
@@ -20,27 +23,21 @@ Adds:
         >ligand1
 """
 
-
+# you may want/need to change the docking_dir to your account where you have permissions
 docking_dir = os.path.join('/', 'home', 'boss', 'pharmaco_withdrawndrugs_project')
 qvina_path = os.path.join('/', 'home', 'boss', 'qvina')
 
 load_dotenv(find_dotenv())
-host = os.getenv('pharmaco_server_IP')
 username = os.getenv('pharmaco_server_USER')
 password = os.getenv('pharmaco_server_PASSWORD')
 
-class Pharmacogenomics(Serverconnection):
-    def __init__(self, host, username, password):
-        super().__init__(host, username, password)
-
-
-docking_server = Pharmacogenomics(host=host, username=username, password=password)
+docking_server = Pharmacogenomics(username=username, password=password)
 
 protein_folders, _ = docking_server.run_command(f'ls {docking_dir}/input_proteins')
 protein_folders = protein_folders.split('\n')
 
 start_size, _ = docking_server.run_command(f'du -sh {docking_dir}')
-
+print(f'Space occupied is {start_size}')
 
 pmol = PandasMol2()
 ppdb = PandasPdb()

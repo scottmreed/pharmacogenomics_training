@@ -1,8 +1,7 @@
 import paramiko
 import logging
-from dotenv import load_dotenv, find_dotenv
+import os
 
-load_dotenv(find_dotenv())
 error_logger = logging.getLogger('test.error')
 info_logger = logging.getLogger('test.info')
 
@@ -42,3 +41,35 @@ class Serverconnection:
     def retreive_results(folder, sftp):
         f = sftp.get(f'{folder}/temp_bt', 'output')
         print(f)
+
+class Pharmacogenomics(Serverconnection):
+    """This is a subclass of Serverconnection
+    which must be imported from server_connections
+    Multiple subclassses can be prepared for different connections
+    Each inherits the class functions like run_command
+    but allow for a unique set of credentials to be passed."""
+
+    def __init__(self, username, password):
+
+        # this is for accesing from local network only
+        my_ip = os.popen('curl ipinfo.io/ip').read()
+
+        if my_ip.startswith('174.29.'):
+            host = '192.168.0.20'
+        else:
+            host = 'pharmacogenomics.ddnsfree.com'
+
+        super().__init__(host, username, password)
+
+
+class Alderaan(Serverconnection):
+    """This is a subclass of Serverconnection
+    which must be imported from server_connections
+    Multiple subclassses can be prepared for different connections
+    Each inherits the class functions like run_command
+    but allow for a unique set of credentials to be passed."""
+
+    def __init__(self, username, password):
+        # must be on VPN for this to work
+        host = '10.133.30.30'
+        super().__init__(host, username, password)

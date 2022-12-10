@@ -13,14 +13,16 @@ info_logger = logging.getLogger('bt.info')
 
 my_ip = os.popen('curl ipinfo.io/ip').read()
 
-if my_ip.startswith('97.118.'):
+if my_ip.startswith('174.29.'):
     mysql_host = '192.168.0.20'
     host = '192.168.0.20'
 
-if my_ip.startswith('132.194'):
+elif my_ip.startswith('132.194'):
     mysql_host = 'pharmacogenomics.ddnsfree.com'
     host = 'pharmacogenomics.ddnsfree.com'
-# mysql_host = os.getenv('mysql_host')
+
+else:
+    mysql_host = os.getenv('mysql_host')
 mysql_user = os.getenv('mysql_user')
 mysql_pw = os.getenv('mysql_pw')
 
