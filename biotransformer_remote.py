@@ -2,7 +2,10 @@ import os
 import logging
 import mysql.connector
 from dotenv import load_dotenv, find_dotenv
-from server_connections import Serverconnection
+from server_connections import Pharmacogenomics
+
+# Caution: anything sent through run_command will execute on the server you are connected to, as written.
+# Look closely at these commands before executing them remotely.
 
 load_dotenv(find_dotenv())
 
@@ -48,16 +51,10 @@ print('drugs length is:', len(drugs))
 drugs_short = drugs[0:1]
 print(len(drugs_short))
 
-# host = os.getenv('pharmaco_server_IP')
 username = os.getenv('pharmaco_server_USER')
 password = os.getenv('pharmaco_server_PASSWORD')
 
-class Pharmacogenomics(Serverconnection):
-    def __init__(self, host, username, password):
-        super().__init__(host, username, password)
-
-
-biotransformer_server = Pharmacogenomics(host=host, username=username, password=password)
+biotransformer_server = Pharmacogenomics(username=username, password=password)
 
 for line in drugs_short:
     cid = line['drugID']

@@ -4,7 +4,7 @@ from server_connections import Pharmacogenomics
 from biopandas.mol2 import PandasMol2
 from biopandas.pdb import PandasPdb
 
-# Caution: anything sent through run_command will excute on the server you are connected to as written.
+# Caution: anything sent through run_command will execute on the server you are connected to, as written.
 # Look closely at these commands before executing them remotely.
 
 """

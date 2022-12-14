@@ -47,7 +47,7 @@ class Pharmacogenomics(Serverconnection):
     which must be imported from server_connections
     Multiple subclassses can be prepared for different connections
     Each inherits the class functions like run_command
-    but allow for a unique set of credentials to be passed."""
+    but allows for a unique set of credentials to be passed."""
 
     def __init__(self, username, password):
 
@@ -67,7 +67,7 @@ class Alderaan(Serverconnection):
     which must be imported from server_connections
     Multiple subclassses can be prepared for different connections
     Each inherits the class functions like run_command
-    but allow for a unique set of credentials to be passed."""
+    but allows for a unique set of credentials to be passed."""
 
     def __init__(self, username, password):
         # must be on VPN for this to work

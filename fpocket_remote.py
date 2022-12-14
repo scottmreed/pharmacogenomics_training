@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv, find_dotenv
 from server_connections import Pharmacogenomics
 
-# Caution: anything sent through run_command will excute on the server you are connected to as written.
+# Caution: anything sent through run_command will execute on the server you are connected to, as written.
 # Look closely at these commands before executing them remotely.
 
 load_dotenv(find_dotenv())
