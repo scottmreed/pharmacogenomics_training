@@ -72,4 +72,17 @@ class Alderaan(Serverconnection):
     def __init__(self, username, password):
         # must be on VPN for this to work
         host = '10.133.30.30'
+        host = 'clas-compute.ucdenver.pvt'
+        super().__init__(host, username, password)
+
+class Kenari(Serverconnection):
+    """This is a subclass of Serverconnection
+    which must be imported from server_connections
+    Multiple subclassses can be prepared for different connections
+    Each inherits the class functions like run_command
+    but allows for a unique set of credentials to be passed."""
+
+    def __init__(self, username, password):
+        # must be on VPN for this to work
+        host = 'clas-chem-compute.ucdenver.pvt'
         super().__init__(host, username, password)
