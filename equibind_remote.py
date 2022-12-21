@@ -7,14 +7,22 @@ import os
 
 load_dotenv(find_dotenv())
 
-
 username = os.getenv('Kenari_USER')
 password = os.getenv('Kenari_PASSWORD')
 
 equibind_server = Kenari(username=username, password=password)
-kenari_sif_folder = os.path.join('/', 'singularity')
-inference_folder = os.path.join('/', 'opt', 'EquiBind', 'EquiBind')
 
+batch_file = """singularity exec ../../singularity/equibind7_latest.sif conda run -n equibind python \
+/EquiBind/multiligand_inference.py --config=/EquiBind/configs_clean/inference.yml \
+-o 'output' -r name1_protein.pdb -l ligands.sdf >& gpucode.log
+"""
+
+equibind_server.send_batch('equibind_batch.sh', batch_file)
+equibind_server.send_chmod('equibind_batch.sh')
+output, _ = equibind_server.run_command('./equibind_batch.sh')
+command_input = 'cat gpucode.log'
+output, _ = equibind_server.run_command(command_input)
+print(output)
 
 # username = os.getenv('ALDERAAN_USER')
 # password = os.getenv('ALDERAAN_PASSWORD')
@@ -22,40 +30,10 @@ inference_folder = os.path.join('/', 'opt', 'EquiBind', 'EquiBind')
 # equibind_pharmaco_folder = os.path.join('/', 'home', 'reedsc', 'temp_file')
 # sif_folder = os.path.join('/', 'home', 'reedsc', 'Equibind')
 # equibind_folder = os.path.join('/', 'home', 'reedsc', 'Equibind', 'EquiBind')
+# kenari_sif_folder = os.path.join('/', 'singularity')
+# inference_folder = os.path.join('/', 'opt', 'EquiBind', 'EquiBind')
+#
 
-
-def run_equibind():
-    success = True
-    try:
-        # equibind_command = f"sbatch {equibind_folder}/equibind_batch.sh {kenari_equibind_folder}/pdb_temporary.txt"
-        # command_input = f'singularity exec {kenari_equibind_folder}/equibind4_latest.sif ls /home'
-        # equibind_server.run_command(command_input)
-        # command_input = f'ls {sif_folder}'
-        # output, _ = equibind_server.run_command(command_input)
-        # print(output)
-        # command_input = f'singularity exec {sif_folder}/equibind4_latest.sif ls {kenari_equibind_folder}/configs_clean/'
-        # output, _ = equibind_server.run_command(command_input)
-        # print(output)
-        # command_input = f'singularity exec {sif_folder}/equibind4_latest.sif python {kenari_equibind_folder}/inference.py --config={equibind_folder}/configs_clean/inference.yml'
-        # output, _ = equibind_server.run_command(command_input)
-        # print(output)
-        command_input = f'ls {inference_folder}'
-        output, _ = equibind_server.run_command(command_input)
-        print(output)
-        command_input = f'singularity exec {kenari_sif_folder}/equibind4_latest.sif ls /opt/conda'# {inference_folder}/configs_clean'
-        output, _ = equibind_server.run_command(command_input)
-        print(output)
-        command_input = f'singularity exec {kenari_sif_folder}/equibind4_latest.sif python /opt/EquiBind/EquiBind/inference.py --config={inference_folder}/configs_clean/inference.yml'
-        output, _ = equibind_server.run_command(command_input)
-        print(output)
-        # with open('equibind_output.txt', 'w+') as f:
-        #     f.write(equibind_output)
-    except:
-        success = False
-        # set_PDB('ERROR')
-
-    print('equibind run is done')
-    return success
-
-
-run_equibind()
+# command_input = f'singularity exec {kenari_sif_folder}/equibind4_latest.sif python /opt/EquiBind/EquiBind/inference.py --config={inference_folder}/configs_clean/inference.yml'
+# output, _ = equibind_server.run_command(command_input)
+# print(output)
