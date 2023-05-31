@@ -21,8 +21,8 @@ cursor = pharmacogenomics_db.cursor()
 cursor.execute(sql_sel_database)
 
 total_InChiKeys = []
-sql = f"""
-   SELECT count(*) FROM pharmacogenomics_dev.precursors;"""
+sql = f"SELECT * FROM pharmacogenomics.gtexome_mutations;"
+
 cursor = pharmacogenomics_db.cursor(buffered=True)
 cursor.execute(sql)
 pharmacogenomics_db.commit()
