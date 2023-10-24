@@ -3,6 +3,8 @@ import pandas as pd
 import mysql.connector
 import numpy as np
 from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+from matplotlib import rcParams
 
 load_dotenv()
 
@@ -28,35 +30,151 @@ input_folder = os.path.join('..', '..',  'GTEXOME_analysis', 'ratio1toInf')
 
 folders = os.listdir(f'{input_folder}')
 
+plddt_list_combined = []
+alphafold_suitable = 0
+plddt_dict = {}
+mutation_count_dict = {}
+charge_change_dict = {}
+disulfide_change_dict = {}
+proline_change_dict = {}
+hbond_change_dict = {}
+salt_change_dict = {}
+alphafold_suitable_dict = {}
+rare_dict = {}
+
 for file in folders:
-    file_name = os.path.join(input_folder, file)
-    protein_list = pd.read_csv(file_name)
-    protein_list.describe()
-    geneID_CCID = protein_list['Gene ID']
-    plddt_list = []
-    charge_change = 0
-    charge_change_count = 0
-    for index, id in enumerate(geneID_CCID):
-        sql = f"SELECT * FROM pharmacogenomics.gtexome_mutations WHERE geneID_CCID like '{geneID_CCID[index]}%';"
-        cursor = pharmacogenomics_db.cursor(buffered=True)
-        cursor.execute(sql)
-        pharmacogenomics_db.commit()
-        gtexome_mutations = cursor.fetchall()
+    if file.endswith('csv') == True:
 
-        try:
-            for index, mutation in enumerate(gtexome_mutations):
-                plddt_list.append(float(gtexome_mutations[index][2]))
-                if (gtexome_mutations[index][3]) == 'No swap of positively and negatively charged residues.':
-                    charge_change += 1
-                charge_change_count
+        file_name = os.path.join(input_folder, file)
+        protein_list = pd.read_csv(file_name)
+        protein_list.describe()
+        geneID_CCID = protein_list['Gene ID']
+        plddt_list = []
+        charge_change = 0
+        mutation_count = 0
+        disulfide_change = 0
+        proline_change = 0
+        hbond_change = 0
+        salt_change = 0
+        alphafold_suitable = 0
+        rare = 0
+        ultra_rare = 0
 
-        except:
-            'a'
-    if len(plddt_list) > 0:
-        print(f'mean for {file} is', np.mean(plddt_list))
-    frac_no_swap = 'No entry'
-    try:
-        frac_no_swap = (charge_change / charge_change_count)
-    except:
-        'a'
-    print('charge_change fraction as no swap', frac_no_swap)
+        for index, id in enumerate(geneID_CCID):
+            sql = f"SELECT * FROM pharmacogenomics.gtexome_mutations WHERE geneID_CCID like '{geneID_CCID[index]}%';"
+            cursor = pharmacogenomics_db.cursor(buffered=True)
+            cursor.execute(sql)
+            pharmacogenomics_db.commit()
+            gtexome_mutations = cursor.fetchall()
+
+            try:
+                for index, mutation in enumerate(gtexome_mutations):
+                    plddt_list.append(float(gtexome_mutations[index][2]))
+                    plddt_list_combined.append(float(gtexome_mutations[index][2]))
+                    mutation_count += 1
+                    if float(gtexome_mutations[index][1]) < 0.1:
+                        rare += 1
+                    if float(gtexome_mutations[index][1]) < 0.01:
+                        ultra_rare += 1
+                    if (gtexome_mutations[index][3]) == 'No swap of positively and negatively charged residues.':
+                        charge_change += 1
+                    if (gtexome_mutations[index][4]) == 'No disulfides disrupted.':
+                        disulfide_change += 1
+                    if (gtexome_mutations[index][5]) == 'No cis proline removed':
+                        proline_change += 1
+                    if (gtexome_mutations[index][7]) == 'No buried side chain hydrogen bonds disrupted.':
+                        hbond_change += 1
+                    if (gtexome_mutations[index][8]) == 'No buried salt bridges broken.':
+                        salt_change += 1
+                    if gtexome_mutations[index][9] == 'Alphafold structure suitable for modeling':
+                        alphafold_suitable += 1
+                    # charge_change_count
+
+            except:
+                print('exception')
+        if len(plddt_list) > 0:
+            file = file.replace('.csv', '')
+            print(f'length of {file} is', mutation_count)
+            print(f'mean for {file} is', np.mean(plddt_list))
+            plddt_dict[f'{file}'] = np.mean(plddt_list)
+            mutation_count_dict[f'{file}'] = mutation_count
+            charge_change_dict[f'{file}'] = round(100-100*(charge_change/mutation_count))
+            disulfide_change_dict[f'{file}'] = round(100-100*(disulfide_change/mutation_count))
+            proline_change_dict[f'{file}'] = round(100-100*(proline_change/mutation_count))
+            hbond_change_dict[f'{file}'] = round(100-100*(hbond_change/mutation_count))
+            salt_change_dict[f'{file}'] = round(100-100*(salt_change/mutation_count))
+            alphafold_suitable_dict[f'{file}'] = round(100-100*(alphafold_suitable/mutation_count))
+            rare_dict[f'{file}'] = round(100-100*(rare/mutation_count))
+
+
+            print(f'charge_change for {file} is', charge_change, round(100-100*(charge_change/mutation_count)), '%')
+            print(f'disulfide_change for {file} is', disulfide_change, round(100-100*(disulfide_change/mutation_count)), '%')
+            print(f'proline_change for {file} is', proline_change, round(100-100*(proline_change/mutation_count)), '%')
+            print(f'hbond_change for {file} is', hbond_change, round(100-100*(hbond_change/mutation_count)), '%')
+            print(f'salt_change for {file} is', salt_change, round(100-100*(salt_change/mutation_count)), '%')
+            print(f'alphafold_suitable for {file} is', alphafold_suitable, round(100-100*(alphafold_suitable/mutation_count)), '%')
+            print(f'rare for {file} is', rare, round(100-100*(rare/mutation_count)), '%')
+            # print(f'ultrarare for {file} is', ultra_rare, round(100-100*(ultra_rare/mutation_count)), '%')
+
+    else:
+        continue
+print('plddt_list_combined is ', len(plddt_list_combined), 'long. With mean of ', np.mean(plddt_list_combined))
+print('alphafold_suitable is ', alphafold_suitable, 'out of ', len(plddt_list_combined))
+
+rcParams['figure.figsize'] = (7, 7)
+
+save_name=str('Paper_figs')
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(plddt_dict.keys(), plddt_dict.values())
+plt.tight_layout()
+plt.savefig(f'plddt_dict_{save_name}.png')
+plt.clf()
+
+mutation_count_dict.pop('Testis')
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(mutation_count_dict.keys(), mutation_count_dict.values())
+plt.tight_layout()
+plt.savefig(f'mutation_count_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(charge_change_dict.keys(), charge_change_dict.values())
+plt.tight_layout()
+plt.savefig(f'charge_change_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(disulfide_change_dict.keys(), disulfide_change_dict.values())
+plt.tight_layout()
+plt.savefig(f'disulfide_change_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(proline_change_dict.keys(), proline_change_dict.values())
+plt.tight_layout()
+plt.savefig(f'proline_change_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(hbond_change_dict.keys(), hbond_change_dict.values())
+plt.tight_layout()
+plt.savefig(f'hbond_change_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(salt_change_dict.keys(), salt_change_dict.values())
+plt.tight_layout()
+plt.savefig(f'salt_change_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(alphafold_suitable_dict.keys(), alphafold_suitable_dict.values())
+plt.tight_layout()
+plt.savefig(f'alphafold_suitable_dict{save_name}.png')
+plt.clf()
+
+plt.xticks(fontsize=9, rotation=90)
+plt.bar(rare_dict.keys(), rare_dict.values())
+plt.tight_layout()
+plt.savefig(f'rare_dict{save_name}.png')
+plt.clf()
