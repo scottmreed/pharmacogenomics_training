@@ -13,14 +13,14 @@ def three_to_one(three_letter_code):
 
 
 def get_Pnum(specificENSG):
-    with open('./ENSG_PN_dict.json', 'rb') as uniprot_to_ensg:
+    with open('ENSG_PN_dict.json', 'rb') as uniprot_to_ensg:
         utpdict = json.load(uniprot_to_ensg)
         pnum = utpdict[f"{specificENSG}"]
     return pnum
 
 
 def get_ENST(specificPnum): # get enst number from p number
-    with open('./uniprot_to_enst.json', 'rb') as uniprot_to_enst:
+    with open('uniprot_to_enst.json', 'rb') as uniprot_to_enst:
         utpdict = json.load(uniprot_to_enst)
         enst = utpdict[f"{specificPnum}"]
         enst1 = enst[:100]

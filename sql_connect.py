@@ -21,7 +21,7 @@ cursor = pharmacogenomics_db.cursor()
 cursor.execute(sql_sel_database)
 
 total_InChiKeys = []
-sql = f"SELECT * FROM pharmacogenomics.gtexome_mutations;"
+sql = f"SELECT * pharmacogenomics_dev.refold_parameters;"
 
 cursor = pharmacogenomics_db.cursor(buffered=True)
 cursor.execute(sql)

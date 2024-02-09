@@ -26,7 +26,7 @@ sql_sel_database = "USE pharmacogenomics"
 cursor = pharmacogenomics_db.cursor()
 cursor.execute(sql_sel_database)
 
-input_folder = os.path.join('..', '..',  'GTEXOME_analysis', 'ratio1toInf')
+input_folder = os.path.join('../..', '..', 'GTEXOME_analysis', 'ratio1toInf')
 
 folders = os.listdir(f'{input_folder}')
 
