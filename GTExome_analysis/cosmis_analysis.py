@@ -6,7 +6,7 @@ from Bio.SeqUtils import seq1
 import json
 from collections import defaultdict
 import pandas as pd
-
+import numpy as np
 
 def read_json_file(file_path):
     with open(file_path, 'r') as file:
@@ -141,7 +141,7 @@ with open(os.path.join('GTExome_analysis', 'cosmis_scores_pdb.tsv'), 'r') as tsv
             continue
 
 cosmis_averages = {key: cosmis_averages_af.get(key, []) + cosmis_averages_pdb.get(key, []) for key in set(cosmis_averages_af) | set(cosmis_averages_pdb)}
-average_scores = {key: sum(values) / len(values) if values else 0 for key, values in cosmis_averages.items()}
+average_scores = {key: np.median(values) if values else 0 for key, values in cosmis_averages.items()}
 one_letter_aa_average_scores = {three_letter: seq1(three_letter) for three_letter in average_scores.keys()}
 df_average_scores = pd.DataFrame(average_scores.items(), columns=['Amino Acid', 'Average COSMIS'])
 
@@ -179,6 +179,7 @@ for mutation in gtexome_mutations:
 
 # Calculate the mean of mean COSMIS values
 mean_mean_cosmis = sum(mean_cosmis_values_by_ensg) / len(mean_cosmis_values_by_ensg)
+median_mean_cosmis = np.median(mean_cosmis_values_by_ensg)
 
 # Print the list containing mean COSMIS values for each ENSG number
 print("Mean COSMIS Values by ENSG Number:")
