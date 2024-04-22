@@ -1,9 +1,42 @@
+**Websites to Explore / Get to Know**
+
+[Lab Website](https://pharmacogenomics.clas.ucdenver.edu/pharmacogenomics/side-effect/)
+     
+   •[GTEx](https://gtexportal.org/home/)
+   
+   •[SIDER](http://sideeffects.embl.de/)
+   
+   •[ZINC15](https://zinc15.docking.org/substances/)
+   
+   •[BioTransformer](http://biotransformer.ca/)
+   
+   •[PHAROS](https://pharos.nih.gov/)
+   
+   •[ModBase](https://modbase.compbio.ucsf.edu/modbase-cgi/index.cgi)
+   
+   •[Gnomad](https://gnomad.broadinstitute.org/ )
+   
+
 Explore notebooks 1 through 4 (modified from OLCC Cheminformatics course) at your own pace. 
 Once comfortable with these, try playing with main.py
 
 1_JupyterNotebookIntro is a Jupyter notebook that shows how the sequence of running blocks of code changes the outcome.
 
 Most everything after main.py requires a server account.
+
+####Directories- where programs are located
+
+Program &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;Lacation 
+
+QuickVina-W &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;/home/boss/qvina
+
+Chimera &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /home/boss/.local 
+
+LSalign &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /opt/lsalign 
+
+mgltools &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/opt/mgltools/mgltools_x86_64Linux2_1.5.7/MGLToolsPckgs/ 
+
+jchem cxcalc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/opt/opt/chemaxon/jchemsuite/bin/ 
 
 From this starting point, try downloading the structure of a 
 few drug molecules and calculating their logp and saving a figure.

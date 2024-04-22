@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-with open('cosmis_output_dict_pdb_revised.json', 'r') as js_file:
+with open('GTExome_analysis/cosmis_output_dict_pdb_revised.json', 'r') as js_file:
     data_pdb = json.load(js_file)
 
 print(len(data_pdb), 'is len pdb dict')
@@ -15,7 +15,7 @@ tot_cosmis = np.sum(cosmis)
 mean_cosmis = tot_cosmis/len(cosmis)
 print('mean_cosmis for PDB: ', mean_cosmis)
 
-with open('cosmis_output_dict_AF_revised.json', 'r') as js_file:
+with open('GTExome_analysis/cosmis_output_dict_AF_revised.json', 'r') as js_file:
     data_af = json.load(js_file)
 
 print(len(data_af), 'is len AF dict')
