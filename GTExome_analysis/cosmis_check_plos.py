@@ -13,14 +13,14 @@ def three_to_one(three_letter_code):
 
 
 def get_Pnum(specificENSG):
-    with open('ENSG_PN_dict.json', 'rb') as uniprot_to_ensg:
+    with open('GTExome_analysis/ENSG_PN_dict.json', 'rb') as uniprot_to_ensg:
         utpdict = json.load(uniprot_to_ensg)
         pnum = utpdict[f"{specificENSG}"]
     return pnum
 
 
 def get_ENST(specificPnum): # get enst number from p number
-    with open('uniprot_to_enst.json', 'rb') as uniprot_to_enst:
+    with open('GTExome_analysis/uniprot_to_enst.json', 'rb') as uniprot_to_enst:
         utpdict = json.load(uniprot_to_enst)
         enst = utpdict[f"{specificPnum}"]
         enst1 = enst[:100]
@@ -32,12 +32,12 @@ def get_COSMIS(cosmis_dict, specificENST):
     return cosmis_pvalue
 
 
-df = pd.read_csv('cosmis_scores_alphafold.tsv', nrows=5000000, sep='\t')
+df = pd.read_csv('GTExome_analysis/cosmis_scores_alphafold.tsv', nrows=5000000, sep='\t')
 cosmis_dict = dict(zip(df['enst_id'], [df['cosmis']]))
 cosmis_af_df = df[['enst_id', 'cosmis', 'uniprot_aa', 'uniprot_pos']]
 
 
-df = pd.read_csv('cosmis_scores_pdb.tsv', nrows=5000000, sep='\t')
+df = pd.read_csv('GTExome_analysis/cosmis_scores_pdb.tsv', nrows=5000000, sep='\t')
 cosmis_dict_pdb = dict(zip(df['enst_id'], df['cosmis']))
 cosmis_pdb_df = df[['enst_id', 'cosmis', 'uniprot_aa', 'uniprot_pos']]
 
